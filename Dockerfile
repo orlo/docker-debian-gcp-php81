@@ -26,6 +26,7 @@ RUN apt-get -qq update && \
         zip unzip && \
     rm -Rf /var/lib/apt/lists/* && \
     a2enmod headers rewrite deflate php8.1 && \
+    rm /etc/apache2/conf-enabled/other-vhosts-access-log.conf /etc/apache2/conf-enabled/serve-cgi-bin.conf && \
     update-alternatives --set php /usr/bin/php8.1
 
 COPY ./provisioning/php.ini /etc/php/8.1/apache2/conf.d/local.ini
@@ -34,8 +35,7 @@ COPY ./provisioning/php.ini /etc/php/8.1/cli/conf.d/local.ini
 RUN echo GMT > /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata \
     && mkdir -p "/var/log/apache2" \
     && ln -sfT /dev/stderr "/var/log/apache2/error.log" \
-    && ln -sfT /dev/stdout "/var/log/apache2/access.log" \
-    && ln -sfT /dev/stdout "/var/log/apache2/other_vhosts_access.log"
+    && ln -sfT /dev/stdout "/var/log/apache2/access.log" 
 
 CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
 EXPOSE 80
