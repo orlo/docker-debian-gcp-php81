@@ -4,8 +4,8 @@ ENV LC_ALL C.UTF-8
 ARG DEBIAN_FRONTEND=noninteractive
 ARG http_proxy=""
 ARG https_proxy=""
-ARG COMPOSER_SHA256="9a18e1a3aadbcb94c1bafd6c4a98ff931f4b43a456ef48575130466e19f05dd6"
-ARG COMPOSER_VER="2.6.5"
+ARG COMPOSER_SHA256="1ffd0be3f27e237b1ae47f9e8f29f96ac7f50a0bd9eef4f88cdbe94dd04bfff0"
+ARG COMPOSER_VER="2.7.1"
 
 RUN echo "force-unsafe-io" > /etc/dpkg/dpkg.cfg.d/force-unsafe-io && \
     apt-get -q update && \
@@ -14,7 +14,7 @@ RUN echo "force-unsafe-io" > /etc/dpkg/dpkg.cfg.d/force-unsafe-io && \
     apt-get clean && rm -Rf /var/lib/apt/lists/*
 
 COPY ./provisioning/sources.list /etc/apt/sources.list
-COPY ./provisioning/debsury.gpg /etc/apt/trusted.gpg.d/debsury.gpg
+COPY ./provisioning/debsury.gpg /usr/share/keyrings/deb.sury.org-php.gpg
 
 RUN apt-get -qq update && \
     eatmydata -- apt-get -qy install \
